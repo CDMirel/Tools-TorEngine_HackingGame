@@ -20,10 +20,43 @@
 class hackme
 {	
 	
+	public function sendmail()
+	{
+		$sql = "SELECT mail FROM torengine_hackgame";
+		$array = mysql_query($sql) or die(mysql_error());
+		$row = mysql_fetch_array($array);
+		
+		while($row = mysql_fetch_array($array)){
+			mail($row['mail'], "HackingGame TorEngine - Nuovo Checkpoint Disponibile", "E' disponibile un nuovo checkpoint, divertiti! http://hackme.torengine.it/");
+		}
+
+	
+	 return 0;
+	}
+	
+	public function enable($hash,$mail)
+	{
+		$sql = "SELECT ID FROM torengine_hackgame WHERE mail = '$mail' AND hash = '$hash'";
+		$array = mysql_query($sql) or die(mysql_error());
+		$row = mysql_fetch_array($array);
+		
+		if(!empty($row['ID'])){
+			$sql = "UPDATE torengine_hackgame SET hide = '1'"; 		
+			$result = mysql_query($sql) or die(mysql_error());
+			
+			echo "OK";
+		}else{
+			echo "Error: contatta ptkdev@gmail.com";
+		}
+
+	
+	 return 0;
+	}
+	
 	public function checkpoint($id)
 	{
 		
-		$sql = "SELECT nick,nome,fb,tw FROM torengine_hackgame ORDER BY ID";
+		$sql = "SELECT nick,nome,fb,tw,hide FROM torengine_hackgame ORDER BY ID";
 		$array = mysql_query($sql) or die(mysql_error());
 		
 		echo "HACKERS CHECKPOINT ".$id.":\n";	
@@ -33,26 +66,27 @@ class hackme
 		$i = 0;
 		
 		while($row = mysql_fetch_array($array)){
-		$i=1;
-			echo "<tr>\n";	
-			echo "<td>NickName: ".$row['nick']."</td>\n";
-			
-			echo "<td>&nbsp;&nbsp;|&nbsp;&nbsp;</td>\n";
-			
-			echo "<td>Nome: ".$row['nome']."</td>\n";
-			
-			echo "<td>&nbsp;&nbsp;|&nbsp;&nbsp;</td>\n";
-			
-			if(!empty($row['fb'])){
-				echo "<td><a href='http://www.fb.me/".$row['fb']."'><img src='./img/fb.png' /></a>&nbsp;&nbsp;</td>\n";
+			if($row['hide']==1){
+				$i=1;
+					echo "<tr>\n";	
+					echo "<td>NickName: ".$row['nick']."</td>\n";
+					
+					echo "<td>&nbsp;&nbsp;|&nbsp;&nbsp;</td>\n";
+					
+					echo "<td>Nome: ".$row['nome']."</td>\n";
+					
+					echo "<td>&nbsp;&nbsp;|&nbsp;&nbsp;</td>\n";
+					
+					if(!empty($row['fb'])){
+						echo "<td><a href='http://www.fb.me/".$row['fb']."'><img src='./img/fb.png' /></a>&nbsp;&nbsp;</td>\n";
+					}
+					
+					if(!empty($row['tw'])){
+						echo "<td><a href='http://www.twitter.com/".$row['tw']."'><img src='./img/tw.png' /></a>&nbsp;&nbsp;</td>\n";
+					}
+					
+					echo "</tr>\n";
 			}
-			
-			if(!empty($row['tw'])){
-				echo "<td><a href='http://www.twitter.com/".$row['tw']."'><img src='./img/tw.png' /></a>&nbsp;&nbsp;</td>\n";
-			}
-			
-			echo "</tr>\n";
-			
 		}
 		
 		if($i==0){
@@ -86,13 +120,22 @@ class hackme
 			}	
 		}
 		
-		$sql = "SELECT ID FROM torengine_hackgame WHERE pass = '$pass' AND mail = '$mail' AND checkpoint = '$check'";
-		$array = mysql_query($sql) or die(mysql_error());
-		$row = mysql_fetch_array($array);
 		
 		if($returned == 1){
+			
+			$hash = "$mail$pass$check";
+			$hash = md5($hash);
+			
+			$sql = "SELECT ID FROM torengine_hackgame WHERE pass = '$pass' AND mail = '$mail' AND checkpoint = '$check'";
+			$array = mysql_query($sql) or die(mysql_error());
+			$row = mysql_fetch_array($array);
+		
 			if(!empty($row['ID'])){
-				$sql = "UPDATE torengine_hackgame SET nick = '$nick', nome = '$nome', fb = '$fb', tw = '$tw', mail = '$mail', pass = '$pass',ip = '$ip',iphost = '$iphost',iptime = '$iptime', checkpoint = '$check' WHERE ID = '".$row['ID']."'"; 		
+				if(empty($hash)){
+					$hash = "$mail$pass$check";
+					$hash = md5($hash);
+				}
+				$sql = "UPDATE torengine_hackgame SET nick = '$nick', nome = '$nome', fb = '$fb', tw = '$tw', mail = '$mail', pass = '$pass',ip = '$ip',iphost = '$iphost',iptime = '$iptime', checkpoint = '$check', hash = '$hash' WHERE ID = '".$row['ID']."'"; 		
 				$result = mysql_query($sql) or die(mysql_error());
 			}else{
 				$sql = "SELECT ID FROM torengine_hackgame WHERE mail = '$mail'";
@@ -100,10 +143,12 @@ class hackme
 				$row = mysql_fetch_array($array);
 				if(empty($row['ID'])){
 					mysql_query("INSERT INTO 
-									torengine_hackgame (`nick`,`nome`,`fb`,`tw`,`mail`,`pass`,`ip`,`iphost`,`iptime`,`checkpoint`)
-									VALUES ('$nick','$nome','$fb','$tw','$mail','$pass','$ip','$iphost','$iptime','$check')
+									torengine_hackgame (`nick`,`nome`,`fb`,`tw`,`mail`,`pass`,`ip`,`iphost`,`iptime`,`checkpoint`,`hash`,`hide`)
+									VALUES ('$nick','$nome','$fb','$tw','$mail','$pass','$ip','$iphost','$iptime','$check','$hash','0')
 									")
 					or die(mysql_error()); 
+					
+					mail($mail, "HackingGame TorEngine - Verifica Email", "Conferma il checkpoint clickando qui: http://hackme.torengine.it/confirm.php?hash=$hash&mail=$mail");
 				}else{
 					$returned = 2;
 				}
@@ -111,7 +156,7 @@ class hackme
 		}
 		
 		if($returned == 1){
-			echo "Hai aggiunto il tuo checkpoint con successo";
+			echo "Hai aggiunto il tuo checkpoint con successo.<br/>Conferma l'email per apparire in homepage.";
 		}else{
 			if($returned == 2){
 				echo "Errore: Email già presente nel database";

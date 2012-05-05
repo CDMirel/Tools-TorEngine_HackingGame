@@ -28,5 +28,7 @@ CREATE TABLE `torengine_hackgame` (
   `iphost` varchar(100) NOT NULL default '',
   `iptime` varchar(100) NOT NULL default '',
   `checkpoint` bigint(20) NOT NULL default '0',
+  `hash` varchar(100) NOT NULL default '',
+  `hide` bigint(20) NOT NULL default '0',
   PRIMARY KEY  (`ID`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
