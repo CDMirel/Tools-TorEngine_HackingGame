@@ -1,0 +1,11 @@
+How to Install
+	- Copy /src content to your hosting
+	- Import db.sql file on database mysql
+	- Edit config.php to connect db
+
+
+Support
+	You can find us on this web source:
+	WebSite: http://www.torengine.it/
+	Source: https://github.com/PTKDev/
+	IRC: chat.freenode.net at #ptkdev
