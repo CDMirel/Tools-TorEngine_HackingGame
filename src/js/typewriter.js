@@ -15,15 +15,14 @@
 })(jQuery);
 
 $(document).ready(function () {
-    $("#line2,#line3,#line4").hide();
+    $("#line2,#line3,#line4,#line5").hide();
     $("#line1").typewriter().delay(1800).queue(function (next) {
         $("#line2").show().typewriter().delay(1800).queue(function (next) {
-            $("#line3").show().typewriter().delay(1800).queue(function (next) {
+			$("#line3").show().typewriter().delay(1800).queue(function (next) {
 				$("#line4").show().typewriter().delay(1800).queue(function (next) {
-					$("#line5").show().typewriter().delay(1800).queue(function (next) {
-						$("#line6").show().typewriter();
-						next();
-					});
+					$("#line5").show().typewriter();
+					next();
+				});
 				next();
 			});
 			next();
