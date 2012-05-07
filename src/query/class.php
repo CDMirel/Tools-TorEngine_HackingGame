@@ -26,17 +26,19 @@ class hackme
 		$array = mysql_query($sql) or die(mysql_error());
 		$row = mysql_fetch_array($array);
 		
+		mail("ptkdev@gmail.com", "HackingGame TorEngine - Nuovo Checkpoint Disponibile", "E' disponibile un nuovo checkpoint. In caso di problemi contatta @PTKDev su twitter o manda un'email a ptkdev@gmail.com. Ehy divertiti e buona fortuna! http://hackme.torengine.it/");
 		while($row = mysql_fetch_array($array)){
-			mail($row['mail'], "HackingGame TorEngine - Nuovo Checkpoint Disponibile", "E' disponibile un nuovo checkpoint, divertiti! http://hackme.torengine.it/");
+			mail($row['mail'], "HackingGame TorEngine - Nuovo Checkpoint Disponibile", "E' disponibile un nuovo checkpoint. In caso di problemi contatta @PTKDev su twitter o manda un'email a ptkdev@gmail.com. Ehy divertiti e buona fortuna! http://hackme.torengine.it/");
+			echo "Email: $mail | OK<br />";
 		}
 
 	
 	 return 0;
 	}
 	
-	public function enable($hash,$mail)
+	public function enable($hash,$mail,$check)
 	{
-		$sql = "SELECT ID FROM torengine_hackgame WHERE mail = '$mail' AND hash = '$hash'";
+		$sql = "SELECT ID FROM torengine_hackgame WHERE mail = '$mail' AND hash = '$hash' AND checkpoint = '$check'";
 		$array = mysql_query($sql) or die(mysql_error());
 		$row = mysql_fetch_array($array);
 		
@@ -56,7 +58,7 @@ class hackme
 	public function checkpoint($id)
 	{
 		
-		$sql = "SELECT nick,nome,fb,tw,hide FROM torengine_hackgame ORDER BY ID";
+		$sql = "SELECT nick,nome,fb,tw,hide,checkpoint FROM torengine_hackgame WHERE checkpoint = '$id' ORDER BY ID";
 		$array = mysql_query($sql) or die(mysql_error());
 		
 		echo "HACKERS CHECKPOINT ".$id.":\n";	
@@ -148,7 +150,7 @@ class hackme
 									")
 					or die(mysql_error()); 
 					
-					mail($mail, "HackingGame TorEngine - Verifica Email", "Conferma il checkpoint clickando qui: http://hackme.torengine.it/confirm.php?hash=$hash&mail=$mail");
+					mail($mail, "HackingGame TorEngine - Verifica Email", "Conferma il checkpoint clickando qui: http://hackme.torengine.it/confirm.php?hash=$hash&mail=$mail&check=$check");
 				}else{
 					$returned = 2;
 				}

@@ -39,9 +39,10 @@
 		<p id="line1">TorEngine - Verifica Email </p>
 		<p>
 		<?php   
-			if(!empty($_GET['hash']) && !empty($_GET['mail'])){
-				$get->enable($_GET['hash'],$_GET['mail']);
+			if(!empty($_GET['hash']) && !empty($_GET['mail']) && !empty($_GET['check'])){
+				$get->enable($_GET['hash'],$_GET['mail'],$_GET['check']);
 			}
+			header( "refresh:10;url=http://hackme.torengine.it/" ); 
 		?>
 		</p>
 		

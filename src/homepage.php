@@ -46,11 +46,25 @@ http://hackme.torengine.it/start
 
 	<body>
 		<p id="line1">TorEngine - Hacking Game (BETA) </p>
-		<p id="line2">In polonia lo stato crea un gioco molto divertente che tradotto in italiano suonerebbe «Hacker della Repubblica Italiana». Il vincitore di questo gioco riceve una borsa di studio nella migliore università del paese. Ho avuto la fortuna di parteciparvi, le regole erano semplici: ogni settimana veniva proposto un quiz, se lo risolvevi entro 24h avevi il punteggio massimo e poi i giorni successivi calava... Il nostro sarà leggermente diverso: avrete dei semplici checkpoint che dovrete raggiungere per mettere il vostro nome nella home page (non è una borsa di studio ma c'è da vantarsi). Bhè, buon divertimento allora! Vi lascio con una bella citazione della distro Sabayon Linux: «Open Your Mind, Open Your Source» </p>
+		<p>In polonia lo stato crea un gioco molto divertente che tradotto in italiano suonerebbe «Hacker della Repubblica Italiana». Il vincitore di questo gioco riceve una borsa di studio nella migliore università del paese. Ho avuto la fortuna di parteciparvi, le regole erano semplici: ogni settimana veniva proposto un quiz, se lo risolvevi entro 24h avevi il punteggio massimo e poi i giorni successivi calava... Il nostro sarà leggermente diverso: avrete dei semplici checkpoint che dovrete raggiungere per mettere il vostro nome nella home page (non è una borsa di studio ma c'è da vantarsi). Bhè, buon divertimento allora! Vi lascio con una bella citazione della distro Sabayon Linux: «Open Your Mind, Open Your Source» </p>
 		
-		<a href='javascript: open("play")'><p id="line3">ELENCO GIOCATORI </p></a>
+		<br />
+		
+		<p>ATTENZIONE - CHANGELOG: 
+		<br /> &bull; Il 04/05/2012 ore 23.30 è stato aperto il checkpoint1
+		<br /> &bull; Il 05/05/2012 ore 11:00 è stato modificato lo step3 del checkpoint1, riscaricate il file! 
+		<br /> &bull; Il 07/05/2012 ore 23:00 è stato aperto il checkpoint2
+		</p>
+		<br/>
+		
+		
+		
+		<a href='javascript: open("play")'><p>ELENCO GIOCATORI </p></a>
 		<div id='play' style="display: none;">
+			<p><?php $get->checkpoint(2); ?></p>
 			<p><?php $get->checkpoint(1); ?></p>
 		</div>
+		<br />
+		<p>OPENSOURCE: su github trovate il cuore del gioco, la classe hackme(). [<a href="https://github.com/PTKDev/Tools-TorEngine_HackingGame">DOWNLOAD</a>] </p>
 	</body>
 </html>
