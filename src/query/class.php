@@ -24,11 +24,11 @@ class hackme
 	{
 		$sql = "SELECT mail FROM torengine_hackgame";
 		$array = mysql_query($sql) or die(mysql_error());
-		$row = mysql_fetch_array($array);
 		
 		mail("ptkdev@gmail.com", "HackingGame TorEngine - Nuovo Checkpoint Disponibile", "E' disponibile un nuovo checkpoint. In caso di problemi contatta @PTKDev su twitter o manda un'email a ptkdev@gmail.com. Ehy divertiti e buona fortuna! http://hackme.torengine.it/");
 		while($row = mysql_fetch_array($array)){
-			mail($row['mail'], "HackingGame TorEngine - Nuovo Checkpoint Disponibile", "E' disponibile un nuovo checkpoint. In caso di problemi contatta @PTKDev su twitter o manda un'email a ptkdev@gmail.com. Ehy divertiti e buona fortuna! http://hackme.torengine.it/");
+			$mail = $row['mail'];
+			mail($mail, "HackingGame TorEngine - Nuovo Checkpoint Disponibile", "E' disponibile un nuovo checkpoint. In caso di problemi contatta @PTKDev su twitter o manda un'email a ptkdev@gmail.com. Ehy divertiti e buona fortuna! http://hackme.torengine.it/");
 			echo "Email: $mail | OK<br />";
 		}
 
@@ -96,7 +96,7 @@ class hackme
 		}
 		
 		
-		echo "</table><br/><br/>\n";
+		echo "</table><br/>\n";
 	
 	 return 0;
 	}
@@ -140,7 +140,7 @@ class hackme
 				$sql = "UPDATE torengine_hackgame SET nick = '$nick', nome = '$nome', fb = '$fb', tw = '$tw', mail = '$mail', pass = '$pass',ip = '$ip',iphost = '$iphost',iptime = '$iptime', checkpoint = '$check', hash = '$hash' WHERE ID = '".$row['ID']."'"; 		
 				$result = mysql_query($sql) or die(mysql_error());
 			}else{
-				$sql = "SELECT ID FROM torengine_hackgame WHERE mail = '$mail'";
+				$sql = "SELECT ID FROM torengine_hackgame WHERE mail = '$mail' AND checkpoint = '$check'";
 				$array = mysql_query($sql) or die(mysql_error());
 				$row = mysql_fetch_array($array);
 				if(empty($row['ID'])){
