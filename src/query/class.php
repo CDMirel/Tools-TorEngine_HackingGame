@@ -22,7 +22,7 @@ class hackme
 	
 	public function sendmail()
 	{
-		$sql = "SELECT mail FROM torengine_hackgame";
+		$sql = "SELECT mail FROM torengine_hackgame WHERE checkpoint = '1'";
 		$array = mysql_query($sql) or die(mysql_error());
 		
 		mail("ptkdev@gmail.com", "HackingGame TorEngine - Nuovo Checkpoint Disponibile", "E' disponibile un nuovo checkpoint. In caso di problemi contatta @PTKDev su twitter o manda un'email a ptkdev@gmail.com. Ehy divertiti e buona fortuna! http://hackme.torengine.it/");
@@ -43,7 +43,7 @@ class hackme
 		$row = mysql_fetch_array($array);
 		
 		if(!empty($row['ID'])){
-			$sql = "UPDATE torengine_hackgame SET hide = '1'"; 		
+			$sql = "UPDATE torengine_hackgame SET hide = '1' WHERE mail = '$mail' AND hash = '$hash' AND checkpoint = '$check'"; 		
 			$result = mysql_query($sql) or die(mysql_error());
 			
 			echo "OK";
@@ -112,9 +112,7 @@ class hackme
 				if (preg_match("/^([A-Za-z0-9_\-\ \.])+$/", $nome)){
 					if (preg_match("/^([A-Za-z0-9_\-\.])+$/", $fb) || empty($fb)){
 						if (preg_match("/^([A-Za-z0-9_\-\.])+$/", $tw) ||  empty($tw)){
-							if (preg_match("/[a-zA-Z]|\d|\w/", $pass)){
-								$returned = 1;
-							}	
+								$returned = 1;	
 						}	
 					}	
 				}	
@@ -137,7 +135,7 @@ class hackme
 					$hash = "$mail$pass$check";
 					$hash = md5($hash);
 				}
-				$sql = "UPDATE torengine_hackgame SET nick = '$nick', nome = '$nome', fb = '$fb', tw = '$tw', mail = '$mail', pass = '$pass',ip = '$ip',iphost = '$iphost',iptime = '$iptime', checkpoint = '$check', hash = '$hash' WHERE ID = '".$row['ID']."'"; 		
+				$sql = "UPDATE torengine_hackgame SET nick = '$nick', nome = '$nome', fb = '$fb', tw = '$tw', mail = '$mail', pass = '$pass',ip = '$ip',iphost = '$iphost',iptime = '$iptime', checkpoint = '$check', hash = '$hash' WHERE ID = '".$row['ID']."' WHERE pass = '$pass' AND mail = '$mail' AND checkpoint = '$check'"; 		
 				$result = mysql_query($sql) or die(mysql_error());
 			}else{
 				$sql = "SELECT ID FROM torengine_hackgame WHERE mail = '$mail' AND checkpoint = '$check'";
